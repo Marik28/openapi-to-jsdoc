@@ -1,0 +1,955 @@
+{
+  "openapi": "3.0.2" ,
+  "info": {
+    "title": "FastAPI" ,
+    "version": "0.1.0"
+  } ,
+  "paths": {
+    "/lessons/": {
+      "get": {
+        "summary": "Get Lessons List" ,
+        "description": "Эндпоинт для получения списка пар" ,
+        "operationId": "get_lessons_list_lessons__get" ,
+        "parameters": [
+          {
+            "required": false ,
+            "schema": {
+              "title": "День недели" ,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/WeekDay"
+                }
+              ]
+            } ,
+            "name": "day" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Четность недели" ,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Parity"
+                }
+              ]
+            } ,
+            "name": "parity" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Группа" ,
+              "type": "string"
+            } ,
+            "example": "ЭЭ-18-4" ,
+            "name": "group" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Подгруппа" ,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Subgroup"
+                }
+              ]
+            } ,
+            "name": "subgroup" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Тип пары" ,
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/LessonKind"
+                }
+              ]
+            } ,
+            "name": "kind" ,
+            "in": "query"
+          }
+        ] ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Lessons List Lessons  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/Lesson"
+                  }
+                }
+              }
+            }
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/groups/": {
+      "get": {
+        "summary": "Get Groups List" ,
+        "description": "Эндпоинт для получения списка групп" ,
+        "operationId": "get_groups_list_groups__get" ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Groups List Groups  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/teachers/": {
+      "get": {
+        "summary": "Get Teachers List" ,
+        "description": "Эндпоинт для получения списка преподавателей" ,
+        "operationId": "get_teachers_list_teachers__get" ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Teachers List Teachers  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/Teacher"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/assignments/": {
+      "get": {
+        "summary": "Get Assignments List" ,
+        "operationId": "get_assignments_list_assignments__get" ,
+        "parameters": [
+          {
+            "required": false ,
+            "schema": {
+              "title": "Group" ,
+              "type": "string"
+            } ,
+            "example": "ЭЭ-18-4" ,
+            "name": "group" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "$ref": "#/components/schemas/Subgroup"
+            } ,
+            "name": "subgroup" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Subject" ,
+              "type": "string"
+            } ,
+            "name": "subject" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Archived" ,
+              "type": "boolean"
+            } ,
+            "name": "archived" ,
+            "in": "query"
+          }
+        ] ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Assignments List Assignments  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/subjects/": {
+      "get": {
+        "summary": "Get Subjects List" ,
+        "operationId": "get_subjects_list_subjects__get" ,
+        "parameters": [
+          {
+            "required": false ,
+            "schema": {
+              "title": "With Links Only" ,
+              "type": "boolean" ,
+              "default": false
+            } ,
+            "name": "with_links_only" ,
+            "in": "query"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Group" ,
+              "type": "string"
+            } ,
+            "example": "ЭЭ-18-4" ,
+            "name": "group" ,
+            "in": "query"
+          }
+        ] ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Subjects List Subjects  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/Subject"
+                  }
+                }
+              }
+            }
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/students/{student_id}/assignments/": {
+      "get": {
+        "summary": "Get Student Assignments" ,
+        "operationId": "get_student_assignments_students__student_id__assignments__get" ,
+        "parameters": [
+          {
+            "required": true ,
+            "schema": {
+              "title": "Student Id" ,
+              "type": "integer"
+            } ,
+            "name": "student_id" ,
+            "in": "path"
+          } ,
+          {
+            "required": false ,
+            "schema": {
+              "title": "Done" ,
+              "type": "boolean" ,
+              "default": false
+            } ,
+            "name": "done" ,
+            "in": "query"
+          }
+        ] ,
+        "responses": {
+          "200": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Student Assignments Students  Student Id  Assignments  Get" ,
+                  "type": "array" ,
+                  "items": {
+                    "$ref": "#/components/schemas/StudentAssignment"
+                  }
+                }
+              }
+            }
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/students/{student_id}/assignments/{student_assignment_id}": {
+      "patch": {
+        "summary": "Update Student Assignment" ,
+        "operationId": "update_student_assignment_students__student_id__assignments__student_assignment_id__patch" ,
+        "parameters": [
+          {
+            "required": true ,
+            "schema": {
+              "title": "Student Assignment Id" ,
+              "type": "integer"
+            } ,
+            "name": "student_assignment_id" ,
+            "in": "path"
+          } ,
+          {
+            "required": true ,
+            "schema": {
+              "title": "Student Id" ,
+              "type": "integer"
+            } ,
+            "name": "student_id" ,
+            "in": "path"
+          }
+        ] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_student_assignment_students__student_id__assignments__student_assignment_id__patch"
+              }
+            }
+          } ,
+          "required": true
+        } ,
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/students/": {
+      "post": {
+        "summary": "Create Student" ,
+        "operationId": "create_student_students__post" ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentCreate"
+              }
+            }
+          } ,
+          "required": true
+        } ,
+        "responses": {
+          "201": {
+            "description": "Successful Response" ,
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    } ,
+    "/students/{student_id}/": {
+      "put": {
+        "summary": "Update Student" ,
+        "operationId": "update_student_students__student_id___put" ,
+        "parameters": [
+          {
+            "required": true ,
+            "schema": {
+              "title": "Student Id" ,
+              "type": "integer"
+            } ,
+            "name": "student_id" ,
+            "in": "path"
+          }
+        ] ,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentUpdate"
+              }
+            }
+          } ,
+          "required": true
+        } ,
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          } ,
+          "422": {
+            "description": "Validation Error" ,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } ,
+  "components": {
+    "schemas": {
+      "Assignment": {
+        "title": "Assignment" ,
+        "required": [
+          "subject" ,
+          "complete_before" ,
+          "title" ,
+          "is_important" ,
+          "archived" ,
+          "group" ,
+          "subgroup" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "subject": {
+            "$ref": "#/components/schemas/LessonSubject"
+          } ,
+          "complete_before": {
+            "title": "Complete Before" ,
+            "type": "string" ,
+            "format": "date"
+          } ,
+          "description": {
+            "title": "Description" ,
+            "type": "string"
+          } ,
+          "title": {
+            "title": "Title" ,
+            "type": "string"
+          } ,
+          "is_important": {
+            "title": "Is Important" ,
+            "type": "boolean"
+          } ,
+          "archived": {
+            "title": "Archived" ,
+            "type": "boolean"
+          } ,
+          "group": {
+            "$ref": "#/components/schemas/Group"
+          } ,
+          "subgroup": {
+            "$ref": "#/components/schemas/Subgroup"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        }
+      } ,
+      "Body_update_student_assignment_students__student_id__assignments__student_assignment_id__patch": {
+        "title": "Body_update_student_assignment_students__student_id__assignments__student_assignment_id__patch" ,
+        "required": [
+          "done"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "done": {
+            "title": "Done" ,
+            "type": "boolean"
+          }
+        }
+      } ,
+      "Building": {
+        "title": "Building" ,
+        "enum": [
+          "0" ,
+          "1" ,
+          "2" ,
+          "3" ,
+          "4"
+        ] ,
+        "type": "string" ,
+        "description": "Перечисление корпусов университета"
+      } ,
+      "ClassRoom": {
+        "title": "ClassRoom" ,
+        "required": [
+          "number" ,
+          "building" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "number": {
+            "title": "Number" ,
+            "type": "integer" ,
+            "description": "Номер аудитории"
+          } ,
+          "building": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Building"
+              }
+            ] ,
+            "description": "Корпус университета, в котором находится аудитория"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        } ,
+        "description": "Модель, описывающая аудиторию"
+      } ,
+      "Group": {
+        "title": "Group" ,
+        "required": [
+          "name" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "name": {
+            "title": "Name" ,
+            "type": "string" ,
+            "description": "Название группы"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        } ,
+        "description": "Модель, описывающая группу"
+      } ,
+      "HTTPValidationError": {
+        "title": "HTTPValidationError" ,
+        "type": "object" ,
+        "properties": {
+          "detail": {
+            "title": "Detail" ,
+            "type": "array" ,
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      } ,
+      "Lesson": {
+        "title": "Lesson" ,
+        "required": [
+          "subject" ,
+          "teacher" ,
+          "group" ,
+          "subgroup" ,
+          "kind" ,
+          "day" ,
+          "parity" ,
+          "time" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "subject": {
+            "title": "Subject" ,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LessonSubject"
+              }
+            ] ,
+            "description": "Предмет, по которому проходит пара"
+          } ,
+          "teacher": {
+            "title": "Teacher" ,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Teacher"
+              }
+            ] ,
+            "description": "Преподаватель, который ведет пару"
+          } ,
+          "classroom": {
+            "title": "Classroom" ,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ClassRoom"
+              }
+            ] ,
+            "description": "Аудитория, в которой проходит пара"
+          } ,
+          "group": {
+            "title": "Group" ,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Group"
+              }
+            ] ,
+            "description": "Группа, у которой проходит пара"
+          } ,
+          "subgroup": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Subgroup"
+              }
+            ] ,
+            "description": "Подгруппа, у которой проходит пара"
+          } ,
+          "kind": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LessonKind"
+              }
+            ] ,
+            "description": "Тип занятия"
+          } ,
+          "day": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WeekDay"
+              }
+            ] ,
+            "description": "День недели, в который проходит пара, в виде перечисления"
+          } ,
+          "parity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Parity"
+              }
+            ] ,
+            "description": "Четность недели, в которую проходит пара"
+          } ,
+          "time": {
+            "title": "Time" ,
+            "type": "string" ,
+            "description": "Время прохождения пары" ,
+            "format": "time"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        } ,
+        "description": "Модель, описывающая пару"
+      } ,
+      "LessonKind": {
+        "title": "LessonKind" ,
+        "enum": [
+          "Лекция" ,
+          "Лабораторное занятие" ,
+          "Семинар" ,
+          "СРСП" ,
+          "СРС" ,
+          "Кураторский час"
+        ] ,
+        "type": "string" ,
+        "description": "Перечисление типов пары"
+      } ,
+      "LessonSubject": {
+        "title": "LessonSubject" ,
+        "required": [
+          "name" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "name": {
+            "title": "Name" ,
+            "type": "string" ,
+            "description": "Название предмета"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        } ,
+        "description": "Модель, описывающая предмет"
+      } ,
+      "Parity": {
+        "title": "Parity" ,
+        "enum": [
+          "1" ,
+          "2" ,
+          "3"
+        ] ,
+        "type": "string" ,
+        "description": "Перечисление вариантов четности пары (числитель, знаменатель или всегда)"
+      } ,
+      "Student": {
+        "title": "Student" ,
+        "required": [
+          "telegram_id" ,
+          "subgroup" ,
+          "group"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "telegram_id": {
+            "title": "Telegram Id" ,
+            "type": "integer"
+          } ,
+          "subgroup": {
+            "$ref": "#/components/schemas/Subgroup"
+          } ,
+          "group": {
+            "$ref": "#/components/schemas/Group"
+          }
+        }
+      } ,
+      "StudentAssignment": {
+        "title": "StudentAssignment" ,
+        "required": [
+          "assignment" ,
+          "student" ,
+          "done" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "assignment": {
+            "$ref": "#/components/schemas/Assignment"
+          } ,
+          "student": {
+            "$ref": "#/components/schemas/Student"
+          } ,
+          "done": {
+            "title": "Done" ,
+            "type": "boolean"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        }
+      } ,
+      "StudentCreate": {
+        "title": "StudentCreate" ,
+        "required": [
+          "telegram_id" ,
+          "subgroup" ,
+          "group_name"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "telegram_id": {
+            "title": "Telegram Id" ,
+            "type": "integer"
+          } ,
+          "subgroup": {
+            "$ref": "#/components/schemas/Subgroup"
+          } ,
+          "group_name": {
+            "title": "Group Name" ,
+            "type": "string"
+          }
+        }
+      } ,
+      "StudentUpdate": {
+        "title": "StudentUpdate" ,
+        "required": [
+          "group_name" ,
+          "subgroup"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "group_name": {
+            "title": "Group Name" ,
+            "type": "string"
+          } ,
+          "subgroup": {
+            "$ref": "#/components/schemas/Subgroup"
+          }
+        }
+      } ,
+      "Subgroup": {
+        "title": "Subgroup" ,
+        "enum": [
+          "1" ,
+          "2" ,
+          "3"
+        ] ,
+        "type": "string" ,
+        "description": "Перечисления подгрупп"
+      } ,
+      "Subject": {
+        "title": "Subject" ,
+        "required": [
+          "name" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "name": {
+            "title": "Name" ,
+            "type": "string" ,
+            "description": "Название предмета"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          } ,
+          "useful_links": {
+            "title": "Useful Links" ,
+            "type": "array" ,
+            "items": {
+              "$ref": "#/components/schemas/UsefulLink"
+            }
+          }
+        } ,
+        "description": "Модель, описывающая предмет"
+      } ,
+      "Teacher": {
+        "title": "Teacher" ,
+        "required": [
+          "first_name" ,
+          "second_name" ,
+          "middle_name" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "first_name": {
+            "title": "First Name" ,
+            "type": "string" ,
+            "description": "Имя преподавателя"
+          } ,
+          "second_name": {
+            "title": "Second Name" ,
+            "type": "string" ,
+            "description": "Фамилия преподавателя"
+          } ,
+          "middle_name": {
+            "title": "Middle Name" ,
+            "type": "string" ,
+            "description": "Отчество преподавателя"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        } ,
+        "description": "Модель, описывающая преподавателя"
+      } ,
+      "UsefulLink": {
+        "title": "UsefulLink" ,
+        "required": [
+          "link" ,
+          "id"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "link": {
+            "title": "Link" ,
+            "type": "string"
+          } ,
+          "description": {
+            "title": "Description" ,
+            "type": "string"
+          } ,
+          "id": {
+            "title": "Id" ,
+            "type": "integer"
+          }
+        }
+      } ,
+      "ValidationError": {
+        "title": "ValidationError" ,
+        "required": [
+          "loc" ,
+          "msg" ,
+          "type"
+        ] ,
+        "type": "object" ,
+        "properties": {
+          "loc": {
+            "title": "Location" ,
+            "type": "array" ,
+            "items": {
+              "type": "string"
+            }
+          } ,
+          "msg": {
+            "title": "Message" ,
+            "type": "string"
+          } ,
+          "type": {
+            "title": "Error Type" ,
+            "type": "string"
+          }
+        }
+      } ,
+      "WeekDay": {
+        "title": "WeekDay" ,
+        "enum": [
+          "1" ,
+          "2" ,
+          "3" ,
+          "4" ,
+          "5" ,
+          "6" ,
+          "7"
+        ] ,
+        "type": "string" ,
+        "description": "Перечисления дней недели"
+      }
+    }
+  }
+}
