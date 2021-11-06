@@ -1,8 +1,9 @@
 # todo добавить определение массивов типов (Array<smth>)
 from pathlib import Path
+from typing import Optional
 
 from ..models.jsdoc import JSDocTypeDefinition, TypeProperty
-from ..models.openapi import Openapi, Property, Schema, Type
+from ..models.openapi import Openapi, Property, Schema, Type, Ref
 
 
 def wrap_lines(lines: list[str]) -> list[str]:
@@ -12,7 +13,22 @@ def wrap_lines(lines: list[str]) -> list[str]:
     return lines
 
 
-def get_property_type(prop: Property):
+def get_items_type(prop: Property) -> Optional[str]:
+    if prop.items is None:
+        return None
+
+    if isinstance(prop.items, Ref):
+        items_type = prop.items.ref.split("/")[-1]
+    else:
+        items_type = prop.items.type
+
+    return items_type
+
+
+def get_property_type(prop: Property) -> tuple[str, Optional[str]]:
+    """
+    :return: -> (property_type, items). If property_type is Array, items is type of objects in array, otherwise - None.
+    """
     prop_type = prop.type
     if prop.ref is not None:
         ref = prop.ref
@@ -28,11 +44,20 @@ def get_property_type(prop: Property):
 
     if ref is not None:
         prop_type = ref.split("/")[-1]
-    return prop_type
+
+    items = get_items_type(prop)
+    return prop_type, items
+
+
+def wrap_type(items: Optional[str]) -> str:
+    if items is None:
+        return ""
+    return f"<{items}>"
 
 
 def get_property_doc(prop: TypeProperty) -> str:
-    doc = f"@property {{{'?' if not prop.required else ''}{prop.type}}} {prop.name}"
+    items = prop.items
+    doc = f"@property {{{'?' if not prop.required else ''}{prop.type}{wrap_type(items)}}} {prop.name}"
 
     if prop.description:
         doc += f" - {prop.description}"
@@ -55,8 +80,8 @@ def get_typedef_doc(typedef: JSDocTypeDefinition) -> list[str]:
 
 def write_docs(typedefs: list[JSDocTypeDefinition], destination_path: Path):
     integer_typedef = JSDocTypeDefinition(
-        name="integer",
-        type="number",
+        name="Integer",
+        type="Number",
     )
     lines = get_typedef_doc(integer_typedef)
     for typedef in typedefs:
@@ -75,14 +100,14 @@ def generate_jsdoc_for_schema(schema: Schema) -> JSDocTypeDefinition:
         type=schema.type,
     )
 
-    if schema.type != Type.OBJECT.value:
+    if schema.type != "Object":
         return typedef
 
     typedef.properties = []
     required_properties = schema.required if schema.required is not None else []
     for name, prop in schema.properties.items():
         required = name in required_properties
-        prop_type = get_property_type(prop)
+        prop_type, items = get_property_type(prop)
 
         generated_prop = TypeProperty(
             **{
@@ -90,6 +115,7 @@ def generate_jsdoc_for_schema(schema: Schema) -> JSDocTypeDefinition:
                 "type": prop_type,
                 "required": required,
                 "description": prop.description,
+                "items": items,
             })
         typedef.properties.append(generated_prop)
     return typedef

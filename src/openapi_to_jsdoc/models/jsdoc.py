@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class TypeProperty(BaseModel):
     name: str
     type: str
+    items: Optional[str]
     description: Optional[str]
     required: bool = False
 

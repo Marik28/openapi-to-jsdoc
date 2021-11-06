@@ -1,7 +1,7 @@
 import enum
-from typing import Optional
+from typing import Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class OpenapiInfo(BaseModel):
@@ -13,6 +13,16 @@ class Ref(BaseModel):
     ref: str = Field(..., alias="$ref")
 
 
+class ArrayType(BaseModel):
+    type: str
+
+    @validator("type")
+    def capitalize_type(cls, value: Optional[str]):
+        if value is None:
+            return None
+        return value.capitalize()
+
+
 class Property(BaseModel):
     ref: Optional[str] = Field(None, alias="$ref")
     all_of: Optional[list[Ref]] = Field(None, alias="allOf")
@@ -21,6 +31,13 @@ class Property(BaseModel):
     format: Optional[str]
     description: Optional[str]
     enum: Optional[list[str]]
+    items: Optional[Union[Ref, ArrayType]]
+
+    @validator("type")
+    def capitalize_type(cls, value: Optional[str]):
+        if value is None:
+            return None
+        return value.capitalize()
 
 
 class Type(enum.Enum):
@@ -29,6 +46,7 @@ class Type(enum.Enum):
     INTEGER = "integer"
     BOOLEAN = "boolean"
     STRING = "string"
+    ARRAY = "array"
 
 
 class Schema(BaseModel):
@@ -37,6 +55,12 @@ class Schema(BaseModel):
     required: Optional[list[str]]
     type: str
     properties: Optional[dict[str, Property]]
+
+    @validator("type")
+    def capitalize_type(cls, value: Optional[str]):
+        if value is None:
+            return None
+        return value.capitalize()
 
 
 class Components(BaseModel):
@@ -47,4 +71,3 @@ class Openapi(BaseModel):
     openapi: str
     info: OpenapiInfo
     components: Components
-
