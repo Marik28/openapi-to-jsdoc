@@ -4,16 +4,6 @@ from typing import Optional, Union
 from pydantic import BaseModel, Field, validator
 
 
-def to_lower_camel_case(word: str) -> str:
-    parts = []
-    for index, part in enumerate(word.split("_")):
-        if index == 0:
-            parts.append(part.lower())
-        else:
-            parts.append(part.capitalize())
-    return "".join(parts)
-
-
 class OpenapiInfo(BaseModel):
     title: str
     version: str
@@ -71,11 +61,6 @@ class Schema(BaseModel):
         if value is None:
             return None
         return value.capitalize()
-
-    @validator("properties")
-    def props_to_lower_camel_case(cls, props: dict):
-        props = {to_lower_camel_case(prop_name): prop_value for prop_name, prop_value in props.items()}
-        return props
 
 
 class Components(BaseModel):
