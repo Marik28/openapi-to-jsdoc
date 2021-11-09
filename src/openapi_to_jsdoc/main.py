@@ -34,13 +34,13 @@ def main(
             help="Path where the generated file will be saved to."
                  " By default, a directory, from which the script was called",
         ),
-        filename: str = typer.Option(
+        generated_file_name: str = typer.Option(
             "docs",
             help="javascript file name (without extension), in which the docs will be generated."
         ),
 ):
     """Generates javascript file with typedefs in JSDoc format, based on OpenAPI schemas"""
-    js_filename = filename + ".js"
+    js_filename = generated_file_name + ".js"
     output_file_path = output_dir_path / js_filename
     openapi = parse_openapi_file(openapi_file, encoding)
     generate_jsdoc(openapi, output_file_path)
