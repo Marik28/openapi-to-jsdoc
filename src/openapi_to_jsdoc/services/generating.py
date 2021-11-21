@@ -1,4 +1,3 @@
-# todo добавить определение массивов типов (Array<smth>)
 from pathlib import Path
 from typing import Optional
 
