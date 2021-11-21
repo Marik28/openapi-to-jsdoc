@@ -4,6 +4,8 @@ from typing import Optional, Union
 from pydantic import BaseModel, Field, validator
 
 
+# todo implement 'additionalProperties' field parsing
+
 class OpenapiInfo(BaseModel):
     title: str
     version: str
