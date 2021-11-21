@@ -58,8 +58,10 @@ def get_property_doc(prop: TypeProperty) -> str:
     items = prop.items
     doc = f"@property {{{'?' if not prop.required else ''}{prop.type}{wrap_type(items)}}} {prop.name}"
 
-    if prop.description:
-        doc += f" - {prop.description}"
+    title = f"{prop.title}" if prop.title is not None else ""
+    description = prop.description if prop.description is not None else ""
+    if description or title:
+        doc += f" - {title.strip()}{'.' if description else ''} {description.strip()}".rstrip()
     return doc
 
 
@@ -103,19 +105,19 @@ def generate_jsdoc_for_schema(schema: Schema) -> JSDocTypeDefinition:
         return typedef
 
     typedef.properties = []
-    required_properties = schema.required if schema.required is not None else []
+    required_properties: list[str] = schema.required if schema.required is not None else []
     for name, prop in schema.properties.items():
         required = name in required_properties
         prop_type, items = get_property_type(prop)
-
+        title = prop.title
         generated_prop = TypeProperty(
-            **{
-                "name": name,
-                "type": prop_type,
-                "required": required,
-                "description": prop.description,
-                "items": items,
-            })
+            name=name,
+            type=prop_type,
+            items=items,
+            title=title,
+            description=prop.description,
+            required=required,
+        )
         typedef.properties.append(generated_prop)
     return typedef
 

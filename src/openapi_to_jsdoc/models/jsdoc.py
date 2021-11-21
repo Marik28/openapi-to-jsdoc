@@ -7,6 +7,7 @@ class TypeProperty(BaseModel):
     name: str
     type: str
     items: Optional[str]
+    title: Optional[str]
     description: Optional[str]
     required: bool = False
 
