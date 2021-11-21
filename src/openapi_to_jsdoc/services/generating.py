@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 from ..models.jsdoc import JSDocTypeDefinition, TypeProperty
-from ..models.openapi import Openapi, Property, Schema, Type, Ref
+from ..models.openapi import Openapi, Property, Schema, Ref
 
 
 def wrap_lines(lines: list[str]) -> list[str]:
